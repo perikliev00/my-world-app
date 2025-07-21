@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control, .form-select, .form-check-input {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #5dade2);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border: none;
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .btn-ai:hover {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .form-section.ai-enhanced {
+            border-left-color: #9b59b6;
+            background: linear-gradient(135deg, #f8f9fa, #f0f8ff);
+        }
+
+        .form-section h5 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .loading-spinner {
+            display: none;
+            color: #9b59b6;
+        }
+
+        .ai-suggestion {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .ai-suggestion h6 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .ai-suggestion p {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .ai-features-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e8f4fd);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #bee5eb;
+        }
+
+        .feature-checkbox {
+            margin-bottom: 10px;
+        }
+
+        .feature-checkbox label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .feature-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-left: 25px;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+
+    <div style="margin-top: 76px;">
+        <div class="container">
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center mb-5">
+                            <h1 class="display-5 fw-bold text-primary">
+                                <i class="fas fa-magic me-3"></i>
+                                Create Your World with AI
+                            </h1>
+                            <p class="lead text-muted">Let AI help you bring your imagination to life with enhanced descriptions, characters, and stories</p>
+                        </div>
+
+                        <% if (typeof error !== 'undefined' && error) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <%= error %>
+                            </div>
+                        <% } %>
+
+                        <!-- AI Features Selection Panel -->
+                        <div class="ai-features-panel">
+                            <h5><i class="fas fa-robot me-2"></i>AI Enhancement Features</h5>
+                            <p class="text-muted mb-3">Select which AI features you'd like to use to enhance your world:</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="feature-checkbox">
+                                        <input type="checkbox" class="form-check-input" id="ai-description" checked>
+                                        <label for="ai-description">
+                                            <i class="fas fa-magic me-1"></i>Enhanced Description
+                                        </label>
+                                        <div class="feature-description">AI will create a rich, detailed description of your world</div>
+                                    </div>
+                                    
+                                    <div class="feature-checkbox">
+                                        <input type="checkbox" class="form-check-input" id="ai-geography" checked>
+                                        <label for="ai-geography">
+                                            <i class="fas fa-mountain me-1"></i>Detailed Geography
+                                        </label>
+                                        <div class="feature-description">Generate landmarks, terrain details, and geographic features</div>
+                                    </div>
+                                    
+                                    <div class="feature-checkbox">
+                                        <input type="checkbox" class="form-check-input" id="ai-characters">
+                                        <label for="ai-characters">
+                                            <i class="fas fa-users me-1"></i>Characters (3)
+                                        </label>
+                                        <div class="feature-description">Create compelling characters with backstories and motivations</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="feature-checkbox">
+                                        <input type="checkbox" class="form-check-input" id="ai-stories">
+                                        <label for="ai-stories">
+                                            <i class="fas fa-book-open me-1"></i>Stories/Adventures (2)
+                                        </label>
+                                        <div class="feature-description">Generate quests and adventures set in your world</div>
+                                    </div>
+                                    
+                                    <div class="feature-checkbox">
+                                        <input type="checkbox" class="form-check-input" id="ai-magic">
+                                        <label for="ai-magic">
+                                            <i class="fas fa-sparkles me-1"></i>Magic System
+                                        </label>
+                                        <div class="feature-description">Create a balanced magic system with spells and rules</div>
+                                    </div>
+                                    
+                                    <div class="feature-checkbox">
+                                        <input type="checkbox" class="form-check-input" id="ai-timeline">
+                                        <label for="ai-timeline">
+                                            <i class="fas fa-clock me-1"></i>Timeline Events (5)
+                                        </label>
+                                        <div class="feature-description">Generate historical events that shaped your world</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="worldForm" action="/world" method="POST">
+                            <!-- Basic Information -->
+                            <div class="form-section">
+                                <h5><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+                                <div class="row">
+                                    <div class="col-md-8 mb-3">
+                                        <label for="name" class="form-label">World Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" 
+                                               placeholder="Enter your world's name" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="type" class="form-label">World Type *</label>
+                                        <select class="form-select" id="type" name="type" required>
+                                            <option value="">Choose a type...</option>
+                                            <option value="fantasy">Fantasy</option>
+                                            <option value="sci-fi">Sci-Fi</option>
+                                            <option value="modern">Modern</option>
+                                            <option value="historical">Historical</option>
+                                            <option value="post-apocalyptic">Post-Apocalyptic</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description *</label>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Give a basic description to start with</span>
+                                        <button type="button" class="btn btn-ai" onclick="generateDescription()">
+                                            <i class="fas fa-magic me-1"></i>Enhance with AI
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control" id="description" name="description" rows="4" 
+                                              placeholder="Describe your world... What makes it unique? What kind of stories unfold here?" 
+                                              required></textarea>
+                                    <div class="ai-suggestion" id="descriptionSuggestion">
+                                        <h6><i class="fas fa-lightbulb me-1"></i>AI Enhanced Description</h6>
+                                        <p id="enhancedDescription"></p>
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="useAIDescription()">
+                                            <i class="fas fa-check me-1"></i>Use This Description
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="hideAISuggestion('descriptionSuggestion')">
+                                            <i class="fas fa-times me-1"></i>Keep Original
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="creator" class="form-label">Creator Name</label>
+                                        <input type="text" class="form-control" id="creator" name="creator" 
+                                               placeholder="Your name or username">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tags" class="form-label">Tags</label>
+                                        <input type="text" class="form-control" id="tags" name="tags" 
+                                               placeholder="magic, dragons, technology, war (separate with commas)">
+                                        <div class="form-text">Help others discover your world with relevant tags.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- World Details -->
+                            <div class="form-section ai-enhanced">
+                                <h5><i class="fas fa-globe me-2"></i>World Details <span class="ai-badge">AI Enhanced</span></h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="population" class="form-label">Population</label>
+                                        <input type="number" class="form-control" id="population" name="population" 
+                                               placeholder="e.g., 1000000" min="0">
+                                        <div class="form-text">Approximate total population of your world.</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="climate" class="form-label">Climate</label>
+                                        <select class="form-select" id="climate" name="climate">
+                                            <option value="">Select climate...</option>
+                                            <option value="tropical">Tropical</option>
+                                            <option value="temperate">Temperate</option>
+                                            <option value="arctic">Arctic</option>
+                                            <option value="desert">Desert</option>
+                                            <option value="varied">Varied</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="technology" class="form-label">Technology Level</label>
+                                    <select class="form-select" id="technology" name="technology">
+                                        <option value="primitive">Primitive</option>
+                                        <option value="medieval" selected>Medieval</option>
+                                        <option value="renaissance">Renaissance</option>
+                                        <option value="industrial">Industrial</option>
+                                        <option value="modern">Modern</option>
+                                        <option value="futuristic">Futuristic</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="hasMagic" name="hasMagic">
+                                        <label class="form-check-label" for="hasMagic">
+                                            <strong>This world has magic</strong>
+                                        </label>
+                                        <div class="form-text">Check this if your world includes magical elements.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Visibility Settings -->
+                            <div class="form-section">
+                                <h5><i class="fas fa-eye me-2"></i>Visibility Settings</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="isPublic" name="isPublic" checked>
+                                    <label class="form-check-label" for="isPublic">
+                                        <strong>Make this world public</strong>
+                                    </label>
+                                    <div class="form-text mt-1">Public worlds can be discovered and viewed by other users. You can change this later.</div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="/world" class="btn btn-outline-secondary me-md-2">
+                                    <i class="fas fa-times me-2"></i>Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <i class="fas fa-save me-2"></i>Create World with AI
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        /**
+         * AI-Enhanced World Creation JavaScript
+         * 
+         * This script handles all AI-powered features for world creation including:
+         * - Description enhancement
+         * - Form validation
+         * - AI feature selection
+         * - Loading states
+         */
+
+        // Global variables
+        let isGenerating = false;
+
+        /**
+         * Generate enhanced description using AI
+         */
+        async function generateDescription() {
+            const name = document.getElementById('name').value.trim();
+            const type = document.getElementById('type').value;
+            const description = document.getElementById('description').value.trim();
+            const climate = document.getElementById('climate').value;
+            const technology = document.getElementById('technology').value;
+
+            // Validate required fields
+            if (!name || !type) {
+                alert('Please enter a world name and select a type before generating description.');
+                return;
+            }
+
+            if (!description) {
+                alert('Please enter a basic description first.');
+                return;
+            }
+
+            // Show loading state
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Generating...';
+            btn.disabled = true;
+
+            try {
+                // Prepare world data for AI
+                const worldData = {
+                    name: name,
+                    type: type,
+                    description: description,
+                    geography: { climate: climate || 'temperate' },
+                    technology: { level: technology || 'medieval' }
+                };
+
+                // Call AI API
+                const response = await fetch('/ai/generate-description', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(worldData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Show AI suggestion
+                    document.getElementById('enhancedDescription').textContent = result.data.enhancedDescription;
+                    document.getElementById('descriptionSuggestion').style.display = 'block';
+                    
+                    // Scroll to suggestion
+                    document.getElementById('descriptionSuggestion').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                } else {
+                    alert('Failed to generate description: ' + result.message);
+                }
+
+            } catch (error) {
+                console.error('Error generating description:', error);
+                alert('Failed to generate description. Please try again.');
+            } finally {
+                // Restore button state
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        /**
+         * Use AI-generated description
+         */
+        function useAIDescription() {
+            const enhancedDescription = document.getElementById('enhancedDescription').textContent;
+            document.getElementById('description').value = enhancedDescription;
+            hideAISuggestion('descriptionSuggestion');
+        }
+
+        /**
+         * Hide AI suggestion
+         */
+        function hideAISuggestion(elementId) {
+            document.getElementById(elementId).style.display = 'none';
+        }
+
+        /**
+         * Handle form submission with AI enhancement
+         */
+        document.getElementById('worldForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const worldData = Object.fromEntries(formData.entries());
+
+            // Get selected AI features
+            const selectedFeatures = [];
+            if (document.getElementById('ai-description').checked) selectedFeatures.push('description');
+            if (document.getElementById('ai-geography').checked) selectedFeatures.push('geography');
+            if (document.getElementById('ai-characters').checked) selectedFeatures.push('characters');
+            if (document.getElementById('ai-stories').checked) selectedFeatures.push('stories');
+            if (document.getElementById('ai-magic').checked) selectedFeatures.push('magic');
+            if (document.getElementById('ai-timeline').checked) selectedFeatures.push('timeline');
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Creating World...';
+            submitBtn.disabled = true;
+
+            try {
+                // First, create the basic world
+                const createResponse = await fetch('/world', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(worldData)
+                });
+
+                if (!createResponse.ok) {
+                    throw new Error('Failed to create world');
+                }
+
+                const createResult = await createResponse.json();
+                const worldId = createResult.world._id;
+
+                // If AI features are selected, enhance the world
+                if (selectedFeatures.length > 0) {
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Enhancing with AI...';
+                    
+                    const enhanceResponse = await fetch(`/ai/enhance-world/${worldId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            features: selectedFeatures
+                        })
+                    });
+
+                    if (!enhanceResponse.ok) {
+                        console.warn('AI enhancement failed, but world was created');
+                    }
+                }
+
+                // Redirect to the created world
+                window.location.href = `/world/${worldId}`;
+
+            } catch (error) {
+                console.error('Error creating world:', error);
+                alert('Failed to create world. Please try again.');
+                
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        /**
+         * Form validation
+         */
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const type = document.getElementById('type').value;
+            const description = document.getElementById('description').value.trim();
+
+            if (name.length < 3) {
+                alert('World name must be at least 3 characters long.');
+                return false;
+            }
+
+            if (!type) {
+                alert('Please select a world type.');
+                return false;
+            }
+
+            if (description.length < 10) {
+                alert('Description must be at least 10 characters long.');
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * Character counter for description
+         */
+        document.getElementById('description').addEventListener('input', function() {
+            const length = this.value.length;
+            const counter = this.parentNode.querySelector('.form-text') || 
+                           this.parentNode.appendChild(document.createElement('div'));
+            
+            counter.className = 'form-text text-end';
+            counter.textContent = `${length} characters`;
+            
+            if (length < 50) {
+                counter.className = 'form-text text-end text-warning';
+                counter.textContent += ' (minimum 50 recommended)';
+            } else {
+                counter.className = 'form-text text-end text-muted';
+            }
+        });
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('AI-Enhanced World Creation form initialized');
+        });
+    </script>
+</body>
+</html> 

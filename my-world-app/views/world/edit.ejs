@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control, .form-select, .form-check-input {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #5dade2);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-section h5 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+
+    <div style="margin-top: 76px;">
+        <div class="container">
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center mb-5">
+                            <h1 class="display-5 fw-bold text-primary">
+                                <i class="fas fa-edit me-3"></i>
+                                Edit World
+                            </h1>
+                            <p class="lead text-muted">Update your world's information</p>
+                        </div>
+
+                        <% if (typeof error !== 'undefined' && error) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <%= error %>
+                            </div>
+                        <% } %>
+
+                        <form action="/world/<%= world._id %>?_method=PUT" method="POST">
+                            <!-- Basic Information -->
+                            <div class="form-section">
+                                <h5><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+                                <div class="row">
+                                    <div class="col-md-8 mb-3">
+                                        <label for="name" class="form-label">World Name *</label>
+                                        <input type="text" class="form-control" id="name" name="name" 
+                                               placeholder="Enter your world's name" 
+                                               value="<%= world.name %>" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="type" class="form-label">World Type *</label>
+                                        <select class="form-select" id="type" name="type" required>
+                                            <option value="">Choose a type...</option>
+                                            <option value="fantasy" <%= world.type === 'fantasy' ? 'selected' : '' %>>Fantasy</option>
+                                            <option value="sci-fi" <%= world.type === 'sci-fi' ? 'selected' : '' %>>Sci-Fi</option>
+                                            <option value="modern" <%= world.type === 'modern' ? 'selected' : '' %>>Modern</option>
+                                            <option value="historical" <%= world.type === 'historical' ? 'selected' : '' %>>Historical</option>
+                                            <option value="post-apocalyptic" <%= world.type === 'post-apocalyptic' ? 'selected' : '' %>>Post-Apocalyptic</option>
+                                            <option value="other" <%= world.type === 'other' ? 'selected' : '' %>>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description *</label>
+                                    <textarea class="form-control" id="description" name="description" rows="4" 
+                                              placeholder="Describe your world... What makes it unique? What kind of stories unfold here?" 
+                                              required><%= world.description %></textarea>
+                                    <div class="form-text">Give a detailed overview of your world that will help others understand and explore it.</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="creator" class="form-label">Creator Name</label>
+                                        <input type="text" class="form-control" id="creator" name="creator" 
+                                               placeholder="Your name or username" 
+                                               value="<%= world.creator %>" readonly>
+                                        <div class="form-text">Creator name cannot be changed after creation.</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="tags" class="form-label">Tags</label>
+                                        <input type="text" class="form-control" id="tags" name="tags" 
+                                               placeholder="magic, dragons, technology, war (separate with commas)" 
+                                               value="<%= world.tags ? world.tags.join(', ') : '' %>">
+                                        <div class="form-text">Help others discover your world with relevant tags.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- World Details -->
+                            <div class="form-section">
+                                <h5><i class="fas fa-globe me-2"></i>World Details</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="population" class="form-label">Population</label>
+                                        <input type="number" class="form-control" id="population" name="population" 
+                                               placeholder="e.g., 1000000" min="0"
+                                               value="<%= world.population || '' %>">
+                                        <div class="form-text">Approximate total population of your world.</div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="climate" class="form-label">Climate</label>
+                                        <select class="form-select" id="climate" name="climate">
+                                            <option value="">Select climate...</option>
+                                            <option value="tropical" <%= (world.geography && world.geography.climate === 'tropical') ? 'selected' : '' %>>Tropical</option>
+                                            <option value="temperate" <%= (world.geography && world.geography.climate === 'temperate') ? 'selected' : '' %>>Temperate</option>
+                                            <option value="arctic" <%= (world.geography && world.geography.climate === 'arctic') ? 'selected' : '' %>>Arctic</option>
+                                            <option value="desert" <%= (world.geography && world.geography.climate === 'desert') ? 'selected' : '' %>>Desert</option>
+                                            <option value="varied" <%= (world.geography && world.geography.climate === 'varied') ? 'selected' : '' %>>Varied</option>
+                                            <option value="other" <%= (world.geography && world.geography.climate === 'other') ? 'selected' : '' %>>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Visibility Settings -->
+                            <div class="form-section">
+                                <h5><i class="fas fa-eye me-2"></i>Visibility Settings</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="isPublic" name="isPublic" 
+                                           <%= world.isPublic ? 'checked' : '' %>>
+                                    <label class="form-check-label" for="isPublic">
+                                        <strong>Make this world public</strong>
+                                    </label>
+                                    <div class="form-text mt-1">Public worlds can be discovered and viewed by other users. Private worlds are only visible to you.</div>
+                                </div>
+                            </div>
+
+                            <!-- World Metadata -->
+                            <div class="form-section">
+                                <h5><i class="fas fa-info me-2"></i>World Information</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            Created: <%= new Date(world.createdAt).toLocaleDateString('en-US', { 
+                                                year: 'numeric', 
+                                                month: 'long', 
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) %>
+                                        </small>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-edit me-1"></i>
+                                            Last Updated: <%= new Date(world.updatedAt).toLocaleDateString('en-US', { 
+                                                year: 'numeric', 
+                                                month: 'long', 
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            }) %>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                                <div>
+                                    <a href="/world/<%= world._id %>" class="btn btn-outline-secondary me-md-2">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                    <a href="/world" class="btn btn-outline-info">
+                                        <i class="fas fa-list me-2"></i>All Worlds
+                                    </a>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-outline-danger me-md-2" onclick="deleteWorld()">
+                                        <i class="fas fa-trash me-2"></i>Delete World
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-2"></i>Update World
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete "<strong><%= world.name %></strong>"?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form action="/world/<%= world._id %>?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-2"></i>Delete World
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        function deleteWorld() {
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        // Form validation and enhancements
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const nameInput = document.getElementById('name');
+            const descriptionInput = document.getElementById('description');
+            
+            // Character count for description
+            const descriptionCounter = document.createElement('div');
+            descriptionCounter.className = 'form-text text-end';
+            descriptionInput.parentNode.appendChild(descriptionCounter);
+            
+            function updateDescriptionCounter() {
+                const length = descriptionInput.value.length;
+                descriptionCounter.textContent = `${length} characters`;
+                if (length < 50) {
+                    descriptionCounter.className = 'form-text text-end text-warning';
+                    descriptionCounter.textContent += ' (minimum 50 recommended)';
+                } else {
+                    descriptionCounter.className = 'form-text text-end text-muted';
+                }
+            }
+            
+            descriptionInput.addEventListener('input', updateDescriptionCounter);
+            updateDescriptionCounter();
+            
+            // Form submission handling
+            form.addEventListener('submit', function(e) {
+                const name = nameInput.value.trim();
+                const description = descriptionInput.value.trim();
+                
+                if (name.length < 3) {
+                    e.preventDefault();
+                    alert('World name must be at least 3 characters long.');
+                    nameInput.focus();
+                    return false;
+                }
+                
+                if (description.length < 10) {
+                    e.preventDefault();
+                    alert('Description must be at least 10 characters long.');
+                    descriptionInput.focus();
+                    return false;
+                }
+                
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Updating World...';
+                submitBtn.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <div style="margin-top: 76px;">
+        <div class="container">
+            <div class="main-content">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center mb-5">
+                            <h1 class="display-5 fw-bold text-primary">
+                                <i class="fas fa-info-circle me-3"></i>
+                                About My World App
+                            </h1>
+                            <p class="lead text-muted">Empowering creativity through world building</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-8 mx-auto">
+                                <h3 class="mb-4">What is My World App?</h3>
+                                <p class="mb-4">
+                                    My World App is a creative platform designed for world builders, storytellers, and imaginative minds. 
+                                    Whether you're creating fantasy realms, sci-fi universes, or modern-day scenarios, our app provides 
+                                    the tools and community to bring your ideas to life.
+                                </p>
+
+                                <h4 class="mb-3">Features</h4>
+                                <div class="row mb-5">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="d-flex">
+                                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                                            <div>
+                                                <h6>Easy World Creation</h6>
+                                                <p class="text-muted mb-0">Intuitive forms to capture your world's details</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="d-flex">
+                                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                                            <div>
+                                                <h6>Rich Categories</h6>
+                                                <p class="text-muted mb-0">Fantasy, Sci-Fi, Historical, and more</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="d-flex">
+                                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                                            <div>
+                                                <h6>Community Sharing</h6>
+                                                <p class="text-muted mb-0">Share your worlds with other creators</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="d-flex">
+                                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                                            <div>
+                                                <h6>Search & Discovery</h6>
+                                                <p class="text-muted mb-0">Find worlds that inspire you</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4 class="mb-3">Technology Stack</h4>
+                                <p class="mb-4">
+                                    This prototype is built with modern web technologies to ensure flexibility and scalability:
+                                </p>
+                                <div class="row mb-5">
+                                    <div class="col-md-6">
+                                        <h6>Backend</h6>
+                                        <ul>
+                                            <li>Node.js</li>
+                                            <li>Express.js</li>
+                                            <li>MongoDB</li>
+                                            <li>Mongoose ODM</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Frontend</h6>
+                                        <ul>
+                                            <li>EJS Templates</li>
+                                            <li>Bootstrap 5</li>
+                                            <li>Font Awesome</li>
+                                            <li>Vanilla JavaScript</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <h4 class="mb-3">Future Enhancements</h4>
+                                <p class="mb-3">This is a prototype version. Future updates may include:</p>
+                                <ul class="mb-5">
+                                    <li>User authentication and profiles</li>
+                                    <li>Advanced world-building tools</li>
+                                    <li>Image uploads and galleries</li>
+                                    <li>Collaborative world building</li>
+                                    <li>Export functionality</li>
+                                    <li>Mobile app version</li>
+                                    <li>Integration with popular frameworks (React, Vue, etc.)</li>
+                                </ul>
+
+                                <div class="text-center">
+                                    <h4 class="mb-3">Ready to start building?</h4>
+                                    <a href="/world/new" class="btn btn-primary btn-lg me-3">
+                                        <i class="fas fa-plus me-2"></i>Create Your First World
+                                    </a>
+                                    <a href="/world" class="btn btn-outline-primary btn-lg">
+                                        <i class="fas fa-search me-2"></i>Explore Existing Worlds
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

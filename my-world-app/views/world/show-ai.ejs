@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= world.name %> - AI Enhanced</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .world-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .content-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+        }
+
+        .content-section.ai-enhanced {
+            border-left-color: #9b59b6;
+            background: linear-gradient(135deg, #f8f9fa, #f0f8ff);
+        }
+
+        .content-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .world-type-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .type-fantasy { background: linear-gradient(135deg, #8e44ad, #9b59b6); color: white; }
+        .type-sci-fi { background: linear-gradient(135deg, #2980b9, #3498db); color: white; }
+        .type-modern { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; }
+        .type-historical { background: linear-gradient(135deg, #d35400, #e67e22); color: white; }
+        .type-post-apocalyptic { background: linear-gradient(135deg, #c0392b, #e74c3c); color: white; }
+        .type-other { background: linear-gradient(135deg, #7f8c8d, #95a5a6); color: white; }
+
+        .character-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #9b59b6;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3498db;
+        }
+
+        .timeline-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #f39c12;
+        }
+
+        .landmark-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #27ae60;
+        }
+
+        .spell-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .ai-stats {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .ai-stats h4 {
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .enhancement-actions {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            border: none;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-ai:hover {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .loading-spinner {
+            display: none;
+            color: #9b59b6;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e9ecef;
+            color: #495057;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 2px;
+        }
+
+        .difficulty-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .difficulty-easy { background: #d4edda; color: #155724; }
+        .difficulty-medium { background: #fff3cd; color: #856404; }
+        .difficulty-hard { background: #f8d7da; color: #721c24; }
+        .difficulty-epic { background: #cce5ff; color: #004085; }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+
+    <div style="margin-top: 76px;">
+        <div class="container">
+            <!-- World Header -->
+            <div class="world-header">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-globe-americas me-3"></i>
+                    <%= world.name %>
+                    <% if (world.hasAiContent) { %>
+                        <span class="ai-badge">
+                            <i class="fas fa-robot me-1"></i>AI Enhanced
+                        </span>
+                    <% } %>
+                </h1>
+                <div class="world-type-badge type-<%= world.type %>">
+                    <%= world.type %>
+                </div>
+                <p class="lead mb-0">Created by <%= world.creator %></p>
+            </div>
+
+            <!-- AI Statistics -->
+            <% if (world.hasAiContent) { %>
+                <div class="ai-stats">
+                    <h4><i class="fas fa-robot me-2"></i>AI Enhancement Statistics</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stat-item">
+                                <span>Enhancement Count:</span>
+                                <strong><%= world.aiMetadata.enhancementCount %></strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Last Enhanced:</span>
+                                <strong><%= new Date(world.aiMetadata.lastEnhanced).toLocaleDateString() %></strong>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-item">
+                                <span>AI Features Used:</span>
+                                <strong><%= world.aiFeaturesList %></strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Total AI Content:</span>
+                                <strong><%= (world.characters?.filter(c => c.aiGenerated).length || 0) + 
+                                           (world.stories?.filter(s => s.aiGenerated).length || 0) + 
+                                           (world.timeline?.filter(t => t.aiGenerated).length || 0) %> items</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+            <!-- Enhancement Actions -->
+            <div class="enhancement-actions">
+                <h5><i class="fas fa-magic me-2"></i>Enhance Your World</h5>
+                <p class="text-muted mb-3">Add more AI-generated content to your world:</p>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-ai" onclick="enhanceWorld(['characters'])">
+                        <i class="fas fa-users me-1"></i>Add Characters
+                    </button>
+                    <button class="btn btn-ai" onclick="enhanceWorld(['stories'])">
+                        <i class="fas fa-book-open me-1"></i>Add Stories
+                    </button>
+                    <button class="btn btn-ai" onclick="enhanceWorld(['timeline'])">
+                        <i class="fas fa-clock me-1"></i>Add Timeline
+                    </button>
+                    <button class="btn btn-ai" onclick="enhanceWorld(['magic'])">
+                        <i class="fas fa-sparkles me-1"></i>Add Magic System
+                    </button>
+                    <button class="btn btn-ai" onclick="enhanceWorld(['geography'])">
+                        <i class="fas fa-mountain me-1"></i>Enhance Geography
+                    </button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <!-- World Description -->
+                <div class="content-section <%= world.hasAiContent ? 'ai-enhanced' : '' %>">
+                    <h3>
+                        <i class="fas fa-info-circle me-2"></i>World Description
+                        <% if (world.hasAiContent) { %>
+                            <span class="ai-badge">AI Enhanced</span>
+                        <% } %>
+                    </h3>
+                    <p class="lead"><%= world.description %></p>
+                    
+                    <% if (world.tags && world.tags.length > 0) { %>
+                        <div class="mt-3">
+                            <% world.tags.forEach(tag => { %>
+                                <span class="tag"><%= tag %></span>
+                            <% }); %>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- AI-Generated Characters -->
+                <% if (world.characters && world.characters.length > 0) { %>
+                    <div class="content-section ai-enhanced">
+                        <h3>
+                            <i class="fas fa-users me-2"></i>Characters
+                            <span class="ai-badge">AI Generated</span>
+                        </h3>
+                        <div class="row">
+                            <% world.characters.forEach(character => { %>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="character-card">
+                                        <h5><%= character.name %></h5>
+                                        <p class="text-muted mb-2">
+                                            <strong>Role:</strong> <%= character.role %>
+                                        </p>
+                                        <p class="mb-2"><%= character.description %></p>
+                                        <% if (character.personality) { %>
+                                            <p class="mb-2">
+                                                <strong>Personality:</strong> <%= character.personality %>
+                                            </p>
+                                        <% } %>
+                                        <% if (character.motivations) { %>
+                                            <p class="mb-0">
+                                                <strong>Motivations:</strong> <%= character.motivations %>
+                                            </p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <!-- Fallback if no AI characters -->
+                    <div class="content-section ai-enhanced">
+                        <h3><i class="fas fa-users me-2"></i>Characters <span class="ai-badge">AI Generated</span></h3>
+                        <p class="text-muted">No AI characters generated yet. Try enhancing this world with AI!</p>
+                    </div>
+                <% } %>
+
+                <!-- AI-Generated Stories -->
+                <% if (world.stories && world.stories.length > 0) { %>
+                    <div class="content-section ai-enhanced">
+                        <h3>
+                            <i class="fas fa-book-open me-2"></i>Stories & Adventures
+                            <span class="ai-badge">AI Generated</span>
+                        </h3>
+                        <div class="row">
+                            <% world.stories.forEach(story => { %>
+                                <div class="col-md-6">
+                                    <div class="story-card">
+                                        <h5><%= story.title %></h5>
+                                        <p class="text-muted mb-2">
+                                            <strong>Type:</strong> <%= story.type %> | 
+                                            <span class="difficulty-badge difficulty-<%= story.difficulty %>">
+                                                <%= story.difficulty %>
+                                            </span>
+                                        </p>
+                                        <p class="mb-2"><%= story.description %></p>
+                                        <% if (story.plot) { %>
+                                            <p class="mb-2">
+                                                <strong>Plot:</strong> <%= story.plot %>
+                                            </p>
+                                        <% } %>
+                                        <% if (story.rewards) { %>
+                                            <p class="mb-0">
+                                                <strong>Rewards:</strong> <%= story.rewards %>
+                                            </p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <!-- Fallback if no AI stories -->
+                    <div class="content-section ai-enhanced">
+                        <h3><i class="fas fa-book-open me-2"></i>Stories & Adventures <span class="ai-badge">AI Generated</span></h3>
+                        <p class="text-muted">No AI stories generated yet. Try enhancing this world with AI!</p>
+                    </div>
+                <% } %>
+
+                <!-- AI-Generated Timeline -->
+                <% if (world.timeline && world.timeline.length > 0) { %>
+                    <div class="content-section ai-enhanced">
+                        <h3>
+                            <i class="fas fa-clock me-2"></i>Historical Timeline
+                            <span class="ai-badge">AI Generated</span>
+                        </h3>
+                        <div class="timeline">
+                            <% world.timeline.forEach(event => { %>
+                                <div class="timeline-item">
+                                    <h6><%= event.event %></h6>
+                                    <p class="text-muted mb-1"><%= event.date %></p>
+                                    <p class="mb-0"><%= event.description %></p>
+                                </div>
+                            <% }); %>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <!-- Fallback if no AI timeline -->
+                    <div class="content-section ai-enhanced">
+                        <h3><i class="fas fa-clock me-2"></i>Historical Timeline <span class="ai-badge">AI Generated</span></h3>
+                        <p class="text-muted">No AI timeline events generated yet. Try enhancing this world with AI!</p>
+                    </div>
+                <% } %>
+
+                <!-- AI-Generated Geography -->
+                <% if (world.geography && world.geography.detailedGeography) { %>
+                    <div class="content-section ai-enhanced">
+                        <h3>
+                            <i class="fas fa-mountain me-2"></i>Detailed Geography
+                            <span class="ai-badge">AI Generated</span>
+                        </h3>
+                        <p><%= world.geography.detailedGeography %></p>
+                        
+                        <% if (world.geography.landmarks && world.geography.landmarks.length > 0) { %>
+                            <h5 class="mt-4">Landmarks</h5>
+                            <div class="row">
+                                <% world.geography.landmarks.forEach(landmark => { %>
+                                    <div class="col-md-6">
+                                        <div class="landmark-card">
+                                            <h6><%= landmark.name %></h6>
+                                            <p class="text-muted mb-1"><%= landmark.location %></p>
+                                            <p class="mb-1"><%= landmark.description %></p>
+                                            <p class="mb-0"><strong>Significance:</strong> <%= landmark.significance %></p>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else { %>
+                    <!-- Fallback if no AI geography -->
+                    <div class="content-section ai-enhanced">
+                        <h3><i class="fas fa-mountain me-2"></i>Detailed Geography <span class="ai-badge">AI Generated</span></h3>
+                        <p class="text-muted">No AI geography generated yet. Try enhancing this world with AI!</p>
+                    </div>
+                <% } %>
+
+                <!-- AI-Generated Magic System -->
+                <% if (world.magic && world.magic.detailedMagic) { %>
+                    <div class="content-section ai-enhanced">
+                        <h3>
+                            <i class="fas fa-sparkles me-2"></i>Magic System
+                            <span class="ai-badge">AI Generated</span>
+                        </h3>
+                        <p><%= world.magic.detailedMagic %></p>
+                        
+                        <% if (world.magic.spells && world.magic.spells.length > 0) { %>
+                            <h5 class="mt-4">Spells</h5>
+                            <div class="row">
+                                <% world.magic.spells.forEach(spell => { %>
+                                    <div class="col-md-6">
+                                        <div class="spell-card">
+                                            <h6><%= spell.name %></h6>
+                                            <p class="mb-1"><%= spell.description %></p>
+                                            <p class="mb-1"><strong>Requirements:</strong> <%= spell.requirements %></p>
+                                            <p class="mb-0"><strong>Effects:</strong> <%= spell.effects %></p>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else { %>
+                    <!-- Fallback if no AI magic system -->
+                    <div class="content-section ai-enhanced">
+                        <h3><i class="fas fa-sparkles me-2"></i>Magic System <span class="ai-badge">AI Generated</span></h3>
+                        <p class="text-muted">No AI magic system generated yet. Try enhancing this world with AI!</p>
+                    </div>
+                <% } %>
+
+                <!-- Basic World Information -->
+                <div class="content-section">
+                    <h3><i class="fas fa-cog me-2"></i>World Details</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Population:</strong> <%= world.population ? world.population.toLocaleString() : 'Unknown' %></p>
+                            <p><strong>Climate:</strong> <%= world.geography?.climate || 'Unknown' %></p>
+                            <p><strong>Technology Level:</strong> <%= world.technology?.level || 'Unknown' %></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Magic Exists:</strong> <%= world.magic?.exists ? 'Yes' : 'No' %></p>
+                            <p><strong>Created:</strong> <%= new Date(world.createdAt).toLocaleDateString() %></p>
+                            <p><strong>Last Updated:</strong> <%= new Date(world.updatedAt).toLocaleDateString() %></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 justify-content-center">
+                    <a href="/world/<%= world._id %>/edit" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i>Edit World
+                    </a>
+                    <a href="/world" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Worlds
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        /**
+         * AI-Enhanced World View JavaScript
+         * 
+         * This script handles AI enhancement features for the world view including:
+         * - World enhancement with AI
+         * - Loading states
+         * - Dynamic content updates
+         */
+
+        /**
+         * Enhance world with AI features
+         * @param {Array} features - Array of features to enhance
+         */
+        async function enhanceWorld(features) {
+            const worldId = '<%= world._id %>';
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            // Show loading state
+            button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Enhancing...';
+            button.disabled = true;
+
+            try {
+                // Call AI enhancement API
+                const response = await fetch(`/ai/enhance-world/${worldId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        features: features
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Show success message
+                    showNotification(`World enhanced with ${features.join(', ')}!`, 'success');
+                    
+                    // Reload page to show new content
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showNotification('Failed to enhance world: ' + result.message, 'error');
+                }
+
+            } catch (error) {
+                console.error('Error enhancing world:', error);
+                showNotification('Failed to enhance world. Please try again.', 'error');
+            } finally {
+                // Restore button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        /**
+         * Show notification message
+         * @param {string} message - Message to display
+         * @param {string} type - Type of notification (success, error, info)
+         */
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            // Add to page
+            document.body.appendChild(notification);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('AI-Enhanced World View initialized');
+            
+            // Add smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
