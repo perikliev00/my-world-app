@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= world.name %> - Neural AI Enhancement</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .neural-header {
+            background: linear-gradient(135deg, #e94560 0%, #0f3460 100%);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(233, 69, 96, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neural-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 2px, transparent 2px);
+            background-size: 30px 30px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.1; transform: scale(1.1); }
+        }
+
+        .brain-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: brain-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes brain-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .emotional-analysis {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .emotion-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 10px 5px;
+            text-transform: uppercase;
+        }
+
+        .emotion-wonder { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .emotion-conflict { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .emotion-harmony { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .emotion-darkness { background: linear-gradient(135deg, #30303d, #181818); }
+        .emotion-hope { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+        .neural-action-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .neural-action-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .neural-button {
+            background: linear-gradient(135deg, #e94560, #0f3460);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neural-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .neural-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .neural-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+
+        .neural-pathway {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pathway-node {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 0 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .pathway-arrow {
+            color: #e94560;
+            margin: 0 5px;
+        }
+
+        .memory-visualization {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .loading-neural {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .neural-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+
+    <div class="container" style="margin-top: 100px;">
+        <!-- Neural Header -->
+        <div class="neural-header text-center">
+            <i class="fas fa-brain brain-icon"></i>
+            <h1 class="display-4 fw-bold mb-3">Neural AI Enhancement</h1>
+            <h2 class="h3 mb-4"><%= world.name %></h2>
+            <p class="lead mb-0">Advanced neuroscience-inspired world building with emotional intelligence</p>
+        </div>
+
+        <!-- Neural Pathway Visualization -->
+        <div class="neural-pathway">
+            <div class="pathway-node">
+                <i class="fas fa-heart"></i> Limbic System
+            </div>
+            <span class="pathway-arrow">→</span>
+            <div class="pathway-node">
+                <i class="fas fa-lightbulb"></i> Creative PFC
+            </div>
+            <span class="pathway-arrow">→</span>
+            <div class="pathway-node">
+                <i class="fas fa-microscope"></i> Analytical PFC
+            </div>
+            <span class="pathway-arrow">→</span>
+            <div class="pathway-node">
+                <i class="fas fa-database"></i> Memory
+            </div>
+        </div>
+
+        <!-- Emotional Analysis Section -->
+        <div class="emotional-analysis" id="emotionalAnalysis">
+            <h3 class="mb-4">
+                <i class="fas fa-heart-pulse me-2"></i>Emotional Analysis
+            </h3>
+            <div id="emotionContent">
+                <p class="text-center">Click "Analyze Emotional Context" to begin neural processing</p>
+            </div>
+            <div class="text-center mt-4">
+                <button class="btn neural-button" onclick="analyzeEmotion()">
+                    <i class="fas fa-brain me-2"></i>Analyze Emotional Context
+                </button>
+            </div>
+        </div>
+
+        <!-- Neural Generation Actions -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="neural-action-card" onclick="generateNeuralContent('characters')">
+                    <h4><i class="fas fa-users me-2"></i>Neural Characters</h4>
+                    <p>Generate emotionally-driven characters with complex motivations</p>
+                    <div class="text-end">
+                        <span class="badge bg-primary">3 Characters</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="neural-action-card" onclick="generateNeuralContent('stories')">
+                    <h4><i class="fas fa-book-open me-2"></i>Neural Stories</h4>
+                    <p>Create emotionally resonant stories and adventures</p>
+                    <div class="text-end">
+                        <span class="badge bg-primary">2 Stories</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="neural-action-card" onclick="generateNeuralContent('factions')">
+                    <h4><i class="fas fa-flag me-2"></i>Neural Factions</h4>
+                    <p>Design factions with conflicting but understandable goals</p>
+                    <div class="text-end">
+                        <span class="badge bg-primary">3 Factions</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="neural-action-card" onclick="generateNeuralContent('culture')">
+                    <h4><i class="fas fa-monument me-2"></i>Neural Culture</h4>
+                    <p>Develop culture shaped by emotional foundations</p>
+                    <div class="text-end">
+                        <span class="badge bg-primary">Full Culture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Neural Enhancement -->
+        <div class="text-center my-5">
+            <button class="btn btn-lg neural-button" onclick="fullNeuralEnhancement()">
+                <i class="fas fa-rocket me-2"></i>Full Neural Enhancement
+            </button>
+            <p class="mt-3 text-muted">Perform complete neural analysis and generation for all features</p>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-neural" id="loadingNeural">
+            <div class="neural-spinner mx-auto mb-3"></div>
+            <h4>Neural Processing in Progress...</h4>
+            <p id="loadingMessage">Analyzing emotional context...</p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle me-2"></i>
+            <span id="successText">Neural enhancement complete!</span>
+        </div>
+
+        <!-- Memory Visualization -->
+        <div class="memory-visualization">
+            <h4 class="mb-3"><i class="fas fa-database me-2"></i>Neural Memory Patterns</h4>
+            <p class="text-muted">The system learns from each generation to improve future content</p>
+            <div id="memoryStats" class="mt-3">
+                <small>Memory patterns will accumulate as you use the neural system</small>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center mt-5 mb-5">
+            <a href="/world/<%= world._id %>" class="btn btn-outline-light me-2">
+                <i class="fas fa-eye me-2"></i>View World
+            </a>
+            <a href="/world" class="btn btn-outline-light">
+                <i class="fas fa-arrow-left me-2"></i>Back to Worlds
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const worldId = '<%= world._id %>';
+        let currentEmotion = null;
+
+        /**
+         * Analyze emotional context of the world
+         */
+        async function analyzeEmotion() {
+            showLoading('Analyzing emotional context...');
+            
+            try {
+                const response = await fetch(`/neural/analyze-emotion/${worldId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentEmotion = result.data.emotionalState;
+                    displayEmotionalAnalysis(result.data);
+                    hideLoading();
+                    showSuccess('Emotional analysis complete!');
+                } else {
+                    hideLoading();
+                    alert('Failed to analyze emotion: ' + result.message);
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Error:', error);
+                alert('Error analyzing emotion');
+            }
+        }
+
+        /**
+         * Display emotional analysis results
+         */
+        function displayEmotionalAnalysis(data) {
+            const content = `
+                <div class="text-center mb-4">
+                    <div class="emotion-badge emotion-${data.emotionalState}">
+                        ${data.emotionalState.toUpperCase()}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Emotional Profile</h5>
+                        <p><strong>Creativity:</strong> ${(data.emotionalProfile.creativity * 100).toFixed(0)}%</p>
+                        <p><strong>Focus:</strong> ${(data.emotionalProfile.focus * 100).toFixed(0)}%</p>
+                        <p><strong>Themes:</strong> ${data.emotionalProfile.themes.join(', ')}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Core Motivations</h5>
+                        <ul>
+                            ${data.motivations.map(m => `<li>${m}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h5>Analysis</h5>
+                    <p>${data.reasoning}</p>
+                </div>
+            `;
+            
+            document.getElementById('emotionContent').innerHTML = content;
+        }
+
+        /**
+         * Generate neural content
+         */
+        async function generateNeuralContent(type) {
+            if (!currentEmotion) {
+                alert('Please analyze emotional context first!');
+                return;
+            }
+            
+            showLoading(`Generating neural ${type}...`);
+            
+            try {
+                const response = await fetch(`/neural/generate-${type}/${worldId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    hideLoading();
+                    showSuccess(`Neural ${type} generated successfully!`);
+                    
+                    // Reload page after 2 seconds to show new content
+                    setTimeout(() => {
+                        window.location.href = `/world/${worldId}/ai`;
+                    }, 2000);
+                } else {
+                    hideLoading();
+                    alert(`Failed to generate ${type}: ` + result.message);
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Error:', error);
+                alert(`Error generating ${type}`);
+            }
+        }
+
+        /**
+         * Perform full neural enhancement
+         */
+        async function fullNeuralEnhancement() {
+            showLoading('Performing full neural enhancement...');
+            
+            try {
+                const response = await fetch(`/neural/full-enhancement/${worldId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    hideLoading();
+                    showSuccess('Full neural enhancement complete!');
+                    
+                    // Show enhancement summary
+                    const summary = `
+                        <h5 class="mt-3">Enhancement Summary</h5>
+                        <p>Emotional State: <strong>${result.data.emotionalState}</strong></p>
+                        <p>Characters Added: <strong>${result.data.enhancementsApplied.characters}</strong></p>
+                        <p>Stories Added: <strong>${result.data.enhancementsApplied.stories}</strong></p>
+                        <p>Factions Added: <strong>${result.data.enhancementsApplied.factions}</strong></p>
+                        <p>Culture Enhanced: <strong>Yes</strong></p>
+                    `;
+                    
+                    document.getElementById('successMessage').innerHTML += summary;
+                    
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = `/world/${worldId}/ai`;
+                    }, 3000);
+                } else {
+                    hideLoading();
+                    alert('Failed to complete enhancement: ' + result.message);
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Error:', error);
+                alert('Error during enhancement');
+            }
+        }
+
+        /**
+         * Show loading state
+         */
+        function showLoading(message) {
+            document.getElementById('loadingMessage').textContent = message;
+            document.getElementById('loadingNeural').style.display = 'block';
+        }
+
+        /**
+         * Hide loading state
+         */
+        function hideLoading() {
+            document.getElementById('loadingNeural').style.display = 'none';
+        }
+
+        /**
+         * Show success message
+         */
+        function showSuccess(message) {
+            document.getElementById('successText').textContent = message;
+            document.getElementById('successMessage').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Neural AI Enhancement interface loaded');
+        });
+    </script>
+</body>
+</html> 

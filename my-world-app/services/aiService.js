@@ -16,10 +16,15 @@ const axios = require('axios');
 const sharp = require('sharp');
 const { v4: uuidv4 } = require('uuid');
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
+// Initialize OpenAI client with graceful handling
+let openai = null;
+try {
+    openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY || 'sk-proj-PLACEHOLDER',
+    });
+} catch (error) {
+    console.warn('OpenAI client initialization failed. AI features will be limited.');
+}
 
 /**
  * AI Service Class
@@ -39,6 +44,11 @@ class AIService {
      */
     async generateWorldDescription(worldData) {
         try {
+            if (!openai) {
+                console.warn('OpenAI client not initialized');
+                return 'AI service is not available. Please configure your OpenAI API key.';
+            }
+            
             const prompt = this.buildWorldDescriptionPrompt(worldData);
             
             const response = await openai.chat.completions.create({

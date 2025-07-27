@@ -121,6 +121,56 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Show neural AI enhancement interface
+router.get('/:id/neural', async (req, res) => {
+    try {
+        const world = await World.findById(req.params.id);
+        
+        if (!world) {
+            return res.status(404).render('404', {
+                title: 'World Not Found',
+                message: 'The world you are looking for does not exist.'
+            });
+        }
+
+        res.render('world/neural-enhance', {
+            title: `${world.name} - Neural AI Enhancement`,
+            world
+        });
+    } catch (error) {
+        console.error(error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Failed to load neural interface'
+        });
+    }
+});
+
+// Show AI-enhanced world view
+router.get('/:id/ai', async (req, res) => {
+    try {
+        const world = await World.findById(req.params.id);
+        
+        if (!world) {
+            return res.status(404).render('404', {
+                title: 'World Not Found',
+                message: 'The world you are looking for does not exist.'
+            });
+        }
+
+        res.render('world/show-ai', {
+            title: `${world.name} - AI Enhanced`,
+            world
+        });
+    } catch (error) {
+        console.error(error);
+        res.render('error', {
+            title: 'Error',
+            message: 'Failed to load world'
+        });
+    }
+});
+
 // Show edit form
 router.get('/:id/edit', async (req, res) => {
     try {

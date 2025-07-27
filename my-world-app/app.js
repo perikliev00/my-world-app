@@ -58,6 +58,7 @@ app.use('/', require('./routes/index'));
 app.use('/world', require('./routes/world'));
 app.use('/api', require('./routes/api'));
 app.use('/ai', require('./routes/ai')); // AI-powered features
+app.use('/neural', require('./routes/neuralAI')); // Neural AI system
 
 // Error handling middleware
 app.use((err, req, res, next) => {
